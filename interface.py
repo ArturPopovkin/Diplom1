@@ -36,12 +36,12 @@ class BotInterface():
         for event in self.longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 if event.text.lower() == 'привет':
-                    '''Логика для получения данных о пользователе'''
+                    
                     self.params = self.vk_tools.get_profile_info(event.user_id)
                     self.message_send(
                         event.user_id, f'Привет, {self.params["name"]}! Если хочешь найти пару, напиши команду "Поиск".')
                 elif event.text.lower() == 'поиск':
-                    '''Логика для поиска анкет'''
+                    
                     self.message_send(
                         event.user_id, 'Я нашёл для тебя пару!)')
                     if self.worksheets:
