@@ -36,8 +36,28 @@ class BotInterface():
         for event in self.longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 if event.text.lower() == 'привет':
-                    
                     self.params = self.vk_tools.get_profile_info(event.user_id)
+                    if self.params['city'] is None:
+                        self.message_send(event.user_id, 'Введите название города проживания.')
+                        for event in self.longpoll.listen():
+                            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                                city = event.text.lower()
+                                self.params['city'] = city
+                                city_name = self.params['city']
+                                if city_name is not None:
+                                    self.params['city_name'] = city_name.capitalize()
+                                    self.message_send(event.user_id, f"Город {self.params['city_name']} принят.")
+                                    break
+                    if self.params['year'] is None:
+                        self.message_send(event.user_id, 'Введите год вашего рождения.')
+                        for event in self.longpoll.listen():
+                            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                                year = event.text.lower()
+                                self.params['year'] = year
+                                year_birth = self.params['year']
+                                if year_birth is not None:
+                                    self.message_send(event.user_id, f"Год рождения {self.params['year_birth']} принят.")
+                                    break
                     self.message_send(
                         event.user_id, f'Привет, {self.params["name"]}! Если хочешь найти пару, напиши команду "Поиск".')
                 elif event.text.lower() == 'поиск':
